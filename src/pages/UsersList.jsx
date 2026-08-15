@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -24,7 +25,7 @@ const UsersList = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`http://localhost:3000/api/users?limit=1000`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users?limit=1000`, {
         withCredentials: true,
       });
       setUsers(response.data.users || []);
