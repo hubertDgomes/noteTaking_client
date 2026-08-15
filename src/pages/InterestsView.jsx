@@ -11,7 +11,7 @@ const InterestsView = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get('http://localhost:3000/api/users/by-interest', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/by-interest`, {
         withCredentials: true,
       });
       setData(response.data || []);

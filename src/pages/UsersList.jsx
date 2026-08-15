@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../axiosConfig';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -45,7 +44,7 @@ const UsersList = () => {
     fetchUsers(1);
   }, []);
 
-  // Modal helpers
+
   const openEditModal = (u) => {
     setEditingUser(u);
     setEditForm({
@@ -73,7 +72,7 @@ const UsersList = () => {
         .filter(Boolean);
 
       await axios.put(
-        `http://localhost:3000/api/users/${editingUser._id}`,
+        `${import.meta.env.VITE_API_URL}/api/users/${editingUser._id}`,
         {
           name: editForm.name,
           email: editForm.email,
@@ -98,7 +97,7 @@ const UsersList = () => {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/users/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${userId}`, {
         withCredentials: true,
       });
       setMessage('User deleted successfully!');
