@@ -6,19 +6,16 @@ const UserPostsView = () => {
   const [searchParams] = useSearchParams();
   const queryUserId = searchParams.get('userId') || '';
 
-  // Users dropdown selector state
   const [userList, setUserList] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(queryUserId);
   const [userData, setUserData] = useState(null);
   const [loadingPosts, setLoadingPosts] = useState(false);
 
-  // New post creation state
   const [postForm, setPostForm] = useState({ title: '', content: '' });
   const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // 1. Fetch users list for dropdown selector
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -37,7 +34,6 @@ const UserPostsView = () => {
     fetchUsers();
   }, []);
 
-  // 2. Fetch user posts using MongoDB $lookup aggregation
   const fetchUserPosts = async (userId) => {
     if (!userId) return;
     setLoadingPosts(true);
@@ -60,7 +56,6 @@ const UserPostsView = () => {
     }
   }, [selectedUserId]);
 
-  // 3. Create a new public post
   const handleCreatePost = async (e) => {
     e.preventDefault();
     if (!postForm.title.trim() || !postForm.content.trim()) return;
@@ -86,7 +81,6 @@ const UserPostsView = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
           <span className="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-0.5 rounded uppercase">
@@ -111,7 +105,6 @@ const UserPostsView = () => {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Create Post Form */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 self-start">
           <h2 className="text-lg font-bold text-slate-800 mb-2">Create New Public Post</h2>
           <p className="text-slate-500 text-xs mb-4">
@@ -151,9 +144,7 @@ const UserPostsView = () => {
           </form>
         </div>
 
-        {/* Right Column: Aggregation Lookup Results */}
         <div className="lg:col-span-2 space-y-4">
-          {/* User selector */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <label className="text-sm font-medium text-slate-700">Select User to View Posts:</label>
             <select
@@ -169,7 +160,6 @@ const UserPostsView = () => {
             </select>
           </div>
 
-          {/* Posts Result */}
           {loadingPosts ? (
             <div className="text-center py-12 text-slate-500">Executing $lookup pipeline...</div>
           ) : userData ? (

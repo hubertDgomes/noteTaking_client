@@ -24,7 +24,6 @@ const Signup = ({ onLoginSuccess }) => {
     setLoading(true);
     setError('');
 
-    // Turn comma-separated interests string into a clean array
     const interests = formData.interestsInput
       .split(',')
       .map((item) => item.trim().toLowerCase())

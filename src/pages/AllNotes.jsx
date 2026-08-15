@@ -7,7 +7,6 @@ const AllNotes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Fetch all notes from all users (Admin only)
   const fetchAllNotes = async (page = 1) => {
     setLoading(true);
     setError('');
@@ -30,7 +29,6 @@ const AllNotes = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
           <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded uppercase">
@@ -83,7 +81,7 @@ const AllNotes = () => {
             ))}
           </div>
 
-          {/* Pagination */}
+
           {pagination.pages > 1 && (
             <div className="flex items-center justify-between mt-8 pt-4 border-t border-slate-200">
               <span className="text-xs text-slate-500">

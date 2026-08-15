@@ -8,7 +8,6 @@ const MyNotes = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  // Form & modal state for creating or editing a note
   const [showModal, setShowModal] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
   const [noteForm, setNoteForm] = useState({ title: '', content: '' });
@@ -66,13 +65,11 @@ const MyNotes = () => {
     setError('');
     try {
       if (editingNote) {
-        // Edit existing note
         await axios.put(`${import.meta.env.VITE_API_URL}/api/notes/${editingNote._id}`, noteForm, {
           withCredentials: true,
         });
         setMessage('Note updated successfully!');
       } else {
-        // Create new note
         await axios.post(`${import.meta.env.VITE_API_URL}/api/createNote`, noteForm, {
           withCredentials: true,
         });
@@ -88,7 +85,6 @@ const MyNotes = () => {
     }
   };
 
-  // 3. Delete note
   const handleDeleteNote = async (noteId) => {
     if (!window.confirm('Are you sure you want to delete this note?')) return;
     try {
@@ -105,7 +101,6 @@ const MyNotes = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">My Notes</h1>
@@ -119,7 +114,6 @@ const MyNotes = () => {
         </button>
       </div>
 
-      {/* Alerts */}
       {message && (
         <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-2.5 rounded-lg text-sm mb-4">
           {message}
@@ -131,7 +125,6 @@ const MyNotes = () => {
         </div>
       )}
 
-      {/* Loading state */}
       {loading ? (
         <div className="text-center py-12 text-slate-500">Loading your notes...</div>
       ) : notes.length === 0 ? (
@@ -147,7 +140,6 @@ const MyNotes = () => {
         </div>
       ) : (
         <>
-          {/* Notes Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {notes.map((note) => (
               <div
@@ -179,7 +171,6 @@ const MyNotes = () => {
             ))}
           </div>
 
-          {/* Pagination Controls */}
           {pagination.pages > 1 && (
             <div className="flex items-center justify-between mt-8 pt-4 border-t border-slate-200">
               <span className="text-xs text-slate-500">
@@ -206,7 +197,6 @@ const MyNotes = () => {
         </>
       )}
 
-      {/* Add / Edit Note Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6">

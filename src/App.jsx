@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// Components
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 
-// Pages
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import MyNotes from './pages/MyNotes';

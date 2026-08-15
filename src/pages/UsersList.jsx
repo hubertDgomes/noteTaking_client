@@ -9,7 +9,6 @@ const UsersList = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  // Modal / Form state for editing a user
   const [editingUser, setEditingUser] = useState(null);
   const [editForm, setEditForm] = useState({
     name: '',
@@ -61,7 +60,6 @@ const UsersList = () => {
     setEditForm({ name: '', email: '', role: 'user', interestsInput: '' });
   };
 
-  // 2. Update user info & role
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -94,7 +92,6 @@ const UsersList = () => {
     }
   };
 
-  // 3. Delete user
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
@@ -206,7 +203,6 @@ const UsersList = () => {
             </table>
           </div>
 
-          {/* Pagination */}
           {pagination.pages > 1 && (
             <div className="flex items-center justify-between p-4 border-t border-slate-200 text-xs">
               <span className="text-slate-500">
@@ -233,7 +229,6 @@ const UsersList = () => {
         </div>
       )}
 
-      {/* Edit User Modal */}
       {editingUser && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
