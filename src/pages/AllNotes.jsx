@@ -12,7 +12,7 @@ const AllNotes = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`/api/notes/all?page=${page}&limit=6`, {
+      const response = await axios.get(`http://localhost:3000/api/notes/all?page=${page}&limit=6`, {
         withCredentials: true,
       });
       setNotes(response.data.notes || []);

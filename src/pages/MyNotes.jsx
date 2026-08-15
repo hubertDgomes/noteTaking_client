@@ -19,7 +19,7 @@ const MyNotes = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`/api/notes?page=${page}&limit=6`, {
+      const response = await axios.get(`http://localhost:3000/api/notes?page=${page}&limit=6`, {
         withCredentials: true,
       });
       setNotes(response.data.notes || []);
@@ -67,13 +67,13 @@ const MyNotes = () => {
     try {
       if (editingNote) {
         // Edit existing note
-        await axios.put(`/api/notes/${editingNote._id}`, noteForm, {
+        await axios.put(`http://localhost:3000/api/notes/${editingNote._id}`, noteForm, {
           withCredentials: true,
         });
         setMessage('Note updated successfully!');
       } else {
         // Create new note
-        await axios.post('/api/createNote', noteForm, {
+        await axios.post('http://localhost:3000/api/createNote', noteForm, {
           withCredentials: true,
         });
         setMessage('Note created successfully!');
@@ -92,7 +92,7 @@ const MyNotes = () => {
   const handleDeleteNote = async (noteId) => {
     if (!window.confirm('Are you sure you want to delete this note?')) return;
     try {
-      await axios.delete(`/api/notes/${noteId}`, {
+      await axios.delete(`http://localhost:3000/api/notes/${noteId}`, {
         withCredentials: true,
       });
       setMessage('Note deleted successfully!');

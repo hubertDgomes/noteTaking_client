@@ -38,7 +38,7 @@ const Signup = ({ onLoginSuccess }) => {
     };
 
     try {
-      const response = await axios.post('/api/signup', payload, {
+      const response = await axios.post('http://localhost:3000/api/signup', payload, {
         withCredentials: true,
       });
 

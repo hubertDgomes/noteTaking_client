@@ -22,7 +22,7 @@ const UserPostsView = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('/api/users?limit=50', {
+        const res = await axios.get('http://localhost:3000/api/users?limit=50', {
           withCredentials: true,
         });
         const list = res.data.users || [];
@@ -43,7 +43,7 @@ const UserPostsView = () => {
     setLoadingPosts(true);
     setError('');
     try {
-      const response = await axios.get(`/api/users/${userId}/posts`, {
+      const response = await axios.get(`http://localhost:3000/api/users/${userId}/posts`, {
         withCredentials: true,
       });
       setUserData(response.data);
@@ -68,7 +68,7 @@ const UserPostsView = () => {
     setCreating(true);
     setError('');
     try {
-      await axios.post('/api/posts', postForm, {
+      await axios.post('http://localhost:3000/api/posts', postForm, {
         withCredentials: true,
       });
       setMessage('Post created successfully!');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosConfig';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -21,12 +21,11 @@ const UsersList = () => {
 
   const navigate = useNavigate();
 
-  // 1. Fetch all users without pagination (Admin only)
   const fetchUsers = async (page = 1) => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`/api/users?limit=1000`, {
+      const response = await axios.get(`http://localhost:3000/api/users?limit=1000`, {
         withCredentials: true,
       });
       setUsers(response.data.users || []);
@@ -74,7 +73,7 @@ const UsersList = () => {
         .filter(Boolean);
 
       await axios.put(
-        `/api/users/${editingUser._id}`,
+        `http://localhost:3000/api/users/${editingUser._id}`,
         {
           name: editForm.name,
           email: editForm.email,
@@ -99,7 +98,7 @@ const UsersList = () => {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`/api/users/${userId}`, {
+      await axios.delete(`http://localhost:3000/api/users/${userId}`, {
         withCredentials: true,
       });
       setMessage('User deleted successfully!');
