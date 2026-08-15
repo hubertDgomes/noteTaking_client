@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const MyNotes = () => {
   const [notes, setNotes] = useState([]);
@@ -18,9 +18,7 @@ const MyNotes = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/notes?page=${page}&limit=6`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/notes?page=${page}&limit=6`);
       setNotes(response.data.notes || []);
       setPagination(response.data.pagination || { page: 1, pages: 1, total: 0 });
     } catch (err) {
@@ -65,14 +63,10 @@ const MyNotes = () => {
     setError('');
     try {
       if (editingNote) {
-        await axios.put(`${import.meta.env.VITE_API_URL}/api/notes/${editingNote._id}`, noteForm, {
-          withCredentials: true,
-        });
+        await axiosInstance.put(`/api/notes/${editingNote._id}`, noteForm);
         setMessage('Note updated successfully!');
       } else {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/createNote`, noteForm, {
-          withCredentials: true,
-        });
+        await axiosInstance.post('/api/createNote', noteForm);
         setMessage('Note created successfully!');
       }
       closeModal();
@@ -88,9 +82,7 @@ const MyNotes = () => {
   const handleDeleteNote = async (noteId) => {
     if (!window.confirm('Are you sure you want to delete this note?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${noteId}`, {
-        withCredentials: true,
-      });
+      await axiosInstance.delete(`/api/notes/${noteId}`);
       setMessage('Note deleted successfully!');
       fetchNotes(pagination.page);
       setTimeout(() => setMessage(''), 3000);

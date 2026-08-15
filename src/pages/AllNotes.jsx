@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const AllNotes = () => {
   const [notes, setNotes] = useState([]);
@@ -11,9 +11,7 @@ const AllNotes = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/notes/all?page=${page}&limit=6`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/notes/all?page=${page}&limit=6`);
       setNotes(response.data.notes || []);
       setPagination(response.data.pagination || { page: 1, pages: 1, total: 0 });
     } catch (err) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const UserPostsView = () => {
   const [searchParams] = useSearchParams();
@@ -19,9 +19,7 @@ const UserPostsView = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users?limit=50`, {
-          withCredentials: true,
-        });
+        const res = await axiosInstance.get('/api/users?limit=50');
         const list = res.data.users || [];
         setUserList(list);
         if (!selectedUserId && list.length > 0) {
@@ -39,9 +37,7 @@ const UserPostsView = () => {
     setLoadingPosts(true);
     setError('');
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/${userId}/posts`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/users/${userId}/posts`);
       setUserData(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch user posts via $lookup');
@@ -63,9 +59,7 @@ const UserPostsView = () => {
     setCreating(true);
     setError('');
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/posts`, postForm, {
-        withCredentials: true,
-      });
+      await axiosInstance.post('/api/posts', postForm);
       setMessage('Post created successfully!');
       setPostForm({ title: '', content: '' });
       if (selectedUserId) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const Login = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -20,9 +20,7 @@ const Login = ({ onLoginSuccess }) => {
     setError('');
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, formData, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post('/api/login', formData);
 
       if (response.data && response.data.user) {
         if (onLoginSuccess) {

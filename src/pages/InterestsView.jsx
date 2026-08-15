@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const InterestsView = () => {
   const [data, setData] = useState([]);
@@ -11,9 +11,7 @@ const InterestsView = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/by-interest`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get('/api/users/by-interest');
       setData(response.data || []);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load aggregation data');

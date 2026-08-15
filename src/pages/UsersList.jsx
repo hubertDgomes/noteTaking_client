@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -24,9 +24,7 @@ const UsersList = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users?limit=1000`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/users?limit=1000`);
       setUsers(response.data.users || []);
       setPagination({
         page: 1,
@@ -70,15 +68,14 @@ const UsersList = () => {
         .map((i) => i.trim().toLowerCase())
         .filter(Boolean);
 
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/users/${editingUser._id}`,
+      await axiosInstance.put(
+        `/api/users/${editingUser._id}`,
         {
           name: editForm.name,
           email: editForm.email,
           role: editForm.role,
           interests,
-        },
-        { withCredentials: true }
+        }
       );
 
       setMessage('User updated successfully!');
@@ -95,9 +92,7 @@ const UsersList = () => {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${userId}`, {
-        withCredentials: true,
-      });
+      await axiosInstance.delete(`/api/users/${userId}`);
       setMessage('User deleted successfully!');
       fetchUsers(pagination.page);
       setTimeout(() => setMessage(''), 3000);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/apiConfig';
 
 const Signup = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({
@@ -37,9 +37,7 @@ const Signup = ({ onLoginSuccess }) => {
     };
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/signup`, payload, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post('/api/signup', payload);
 
       if (response.data && response.data.user) {
         if (onLoginSuccess) {
