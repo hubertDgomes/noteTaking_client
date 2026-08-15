@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import axios from 'axios';
 
 // Components
 import Navbar from './components/Navbar';
@@ -17,61 +16,20 @@ import InterestsView from './pages/InterestsView';
 import UserPostsView from './pages/UserPostsView';
 
 function App() {
-  // Simple local state for logged in user (with localStorage fallback)
-  const [user, setUser] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('user');
-      return savedUser ? JSON.parse(savedUser) : null;
-    } catch {
-      return null;
-    }
-  });
-  const [loading, setLoading] = useState(true);
+  const savedUser = localStorage.getItem('user');
+  const user = savedUser ? JSON.parse(savedUser) : null;
+  const isAuthed = Boolean(savedUser);
+  const isAdmin = user?.role === 'admin';
 
-  // Check if session cookie is active on page refresh
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await axios.get('/api/profile', {
-          withCredentials: true,
-        });
-        if (response.data && response.data.user) {
-          setUser(response.data.user);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-        } else {
-          setUser(null);
-          localStorage.removeItem('user');
-        }
-      } catch (err) {
-        setUser(null);
-        localStorage.removeItem('user');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuthStatus();
-  }, []);
-
-  // Handler passed to Login and Signup
   const handleLoginSuccess = (userData) => {
-    setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    window.location.href = userData?.role === 'admin' ? '/all-notes' : '/notes';
   };
 
-  // Handler passed to Navbar for logout
   const handleLogout = () => {
-    setUser(null);
     localStorage.removeItem('user');
+    window.location.href = '/login';
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500 font-medium">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <BrowserRouter>
@@ -80,25 +38,26 @@ function App() {
 
         <main className="flex-1">
           <Routes>
-            {/* Public Routes */}
             <Route
               path="/login"
-              element={user ? <Navigate to="/notes" replace /> : <Login onLoginSuccess={handleLoginSuccess} />}
+              element={isAuthed ? <Navigate to={isAdmin ? '/all-notes' : '/notes'} replace /> : <Login onLoginSuccess={handleLoginSuccess} />}
             />
             <Route
               path="/signup"
-              element={user ? <Navigate to="/notes" replace /> : <Signup onLoginSuccess={handleLoginSuccess} />}
+              element={isAuthed ? <Navigate to={isAdmin ? '/all-notes' : '/notes'} replace /> : <Signup onLoginSuccess={handleLoginSuccess} />}
             />
 
-            {/* Protected Routes (User must be logged in) */}
             <Route
               path="/"
               element={
-                <ProtectedRoute user={user}>
-                  <Navigate to="/notes" replace />
-                </ProtectedRoute>
+                isAuthed ? (
+                  <Navigate to={isAdmin ? '/all-notes' : '/notes'} replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
               }
             />
+
             <Route
               path="/notes"
               element={
@@ -107,6 +66,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/interests"
               element={
@@ -115,6 +75,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/posts"
               element={
@@ -124,7 +85,6 @@ function App() {
               }
             />
 
-            {/* Admin-Only Routes */}
             <Route
               path="/all-notes"
               element={
@@ -133,6 +93,7 @@ function App() {
                 </AdminRoute>
               }
             />
+
             <Route
               path="/users"
               element={
@@ -142,8 +103,7 @@ function App() {
               }
             />
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/notes" replace />} />
+            <Route path="*" element={<Navigate to={isAuthed ? (isAdmin ? '/all-notes' : '/notes') : '/login'} replace />} />
           </Routes>
         </main>
       </div>

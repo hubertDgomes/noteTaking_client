@@ -14,7 +14,7 @@ const MyNotes = () => {
   const [noteForm, setNoteForm] = useState({ title: '', content: '' });
   const [submitting, setSubmitting] = useState(false);
 
-  // 1. Fetch user's private notes with pagination
+  
   const fetchNotes = async (page = 1) => {
     setLoading(true);
     setError('');
@@ -31,12 +31,11 @@ const MyNotes = () => {
     }
   };
 
-  // Load notes on first mount
+
   useEffect(() => {
     fetchNotes(1);
   }, []);
 
-  // Modal open / close helpers
   const openAddModal = () => {
     setEditingNote(null);
     setNoteForm({ title: '', content: '' });
@@ -55,10 +54,10 @@ const MyNotes = () => {
     setNoteForm({ title: '', content: '' });
   };
 
-  // 2. Create or Update note
+
   const handleSaveNote = async (e) => {
     e.preventDefault();
-    if (!noteForm.title.trim() || !noteForm.content.trim()) {
+    if (!noteForm.title || !noteForm.content) {
       setError('Title and content are required');
       return;
     }

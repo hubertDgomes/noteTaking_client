@@ -21,18 +21,18 @@ const UsersList = () => {
 
   const navigate = useNavigate();
 
-  // 1. Fetch paginated list of users (Admin only)
+  // 1. Fetch all users without pagination (Admin only)
   const fetchUsers = async (page = 1) => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`/api/users?page=${page}&limit=10`, {
+      const response = await axios.get(`/api/users?limit=1000`, {
         withCredentials: true,
       });
       setUsers(response.data.users || []);
       setPagination({
-        page: response.data.page || 1,
-        pages: response.data.pages || 1,
+        page: 1,
+        pages: 1,
         total: response.data.total || 0,
       });
     } catch (err) {

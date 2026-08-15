@@ -6,7 +6,7 @@ const InterestsView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Fetch MongoDB Aggregation (Scenario 1: Users grouped by interest)
+  
   const fetchInterestsAggregation = async () => {
     setLoading(true);
     setError('');

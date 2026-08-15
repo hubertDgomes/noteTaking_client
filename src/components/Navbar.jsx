@@ -17,21 +17,37 @@ const Navbar = ({ user, onLogout }) => {
   return (
     <nav className="bg-slate-900 text-white shadow-md">
       <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-        {/* Brand */}
         <Link to="/" className="text-xl font-bold tracking-wide text-indigo-400 hover:text-indigo-300">
           📝 SecureNotes
         </Link>
 
-        {/* Links */}
         <div className="flex items-center gap-2 md:gap-4 flex-wrap">
           {isAuthenticated ? (
             <>
-              <Link
-                to="/notes"
-                className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/notes') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
-              >
-                My Notes
-              </Link>
+              {!isAdmin && (
+                <>
+                  <Link
+                    to="/notes"
+                    className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/notes') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
+                  >
+                    My Notes
+                  </Link>
+
+                  <Link
+                    to="/interests"
+                    className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/interests') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
+                  >
+                    Interests
+                  </Link>
+
+                  <Link
+                    to="/posts"
+                    className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/posts') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
+                  >
+                    Posts
+                  </Link>
+                </>
+              )}
 
               {isAdmin && (
                 <>
@@ -39,41 +55,21 @@ const Navbar = ({ user, onLogout }) => {
                     to="/all-notes"
                     className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/all-notes') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
                   >
-                    All Notes (Admin)
+                    All Notes
                   </Link>
                   <Link
                     to="/users"
                     className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/users') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
                   >
-                    Manage Users
+                    Users
                   </Link>
                 </>
               )}
 
-              <Link
-                to="/interests"
-                className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/interests') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
-              >
-                Interests Grouping
-              </Link>
-
-              <Link
-                to="/posts"
-                className={'px-3 py-1.5 rounded-md text-sm font-medium transition ' + (isActive('/posts') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800')}
-              >
-                User Posts ($lookup)
-              </Link>
-
-              {/* User Info & Logout */}
               <div className="flex items-center gap-3 ml-2 pl-2 border-l border-slate-700">
-                <div className="text-right hidden sm:block">
-                  <div className="text-xs text-slate-200 font-semibold">{user?.name}</div>
-                  <span
-                    className={'inline-block text-[10px] font-bold uppercase px-1.5 py-0.2 rounded ' + (isAdmin ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300')}
-                  >
-                    {user?.role || 'user'}
-                  </span>
-                </div>
+                <span className="text-xs text-slate-200 font-semibold hidden sm:block">
+                  {user?.name || 'User'}
+                </span>
                 <button
                   onClick={handleLogout}
                   className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition cursor-pointer"
